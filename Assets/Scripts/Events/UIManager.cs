@@ -3,8 +3,6 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    private GameplayManager gameplayManager;
-
     public TextMeshProUGUI scoreText = null;
 
     private void OnEnable()
@@ -14,6 +12,6 @@ public class UIManager : MonoBehaviour
 
     public void UpdateScoreText(int score)
     {
-        scoreText.text = gameplayManager.score.ToString();
+        scoreText.text = score.ToString();
     }
 }

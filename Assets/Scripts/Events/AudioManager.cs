@@ -3,10 +3,15 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     public AudioSource audioSourceSfx;
-    
 
-    public void PlayCoinSfx()
+    private void OnEnable()
     {
+        Coin.coinCollected.AddListener( PlayCoinSfx );
+    }
+
+    public void PlayCoinSfx(Coin coin)
+    {
+        audioSourceSfx.transform.position = coin.transform.position;
         audioSourceSfx.Play();
     }
 }
