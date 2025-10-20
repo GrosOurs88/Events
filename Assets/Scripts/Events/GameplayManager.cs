@@ -9,12 +9,25 @@ public class GameplayManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Coin.coinCollected.AddListener(IncrementScore);
+        Coin.coinCollected.AddListener( IncrementScore );
+        CoinGold.coinGoldCollected.AddListener( IncrementScoreGold );
     }
 
-    public void IncrementScore(Coin coin)
+    private void OnDisable()
+    {
+        Coin.coinCollected.RemoveListener( IncrementScore );
+    }
+
+    public void IncrementScore( Coin coin )
     {
         score++;
-        scoreIncreased.Invoke(score);
+        scoreIncreased.Invoke( score );
     }
+
+    public void IncrementScoreGold( CoinGold coin )
+    {
+        score++;
+        scoreIncreased.Invoke( score );
+    }
+
 }

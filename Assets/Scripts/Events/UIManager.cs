@@ -7,7 +7,12 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameplayManager.scoreIncreased.AddListener(UpdateScoreText);
+        GameplayManager.scoreIncreased.AddListener( UpdateScoreText );      
+    }
+
+    private void OnDisable()
+    {
+        GameplayManager.scoreIncreased.RemoveListener( UpdateScoreText );
     }
 
     public void UpdateScoreText(int score)
