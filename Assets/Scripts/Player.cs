@@ -4,10 +4,11 @@ using UnityEngine;
 public class Player : NetworkBehaviour
 {
     [SerializeField] private float _speed = 1.0f;
+    [SerializeField] private MeshRenderer _meshRenderer;
 
     private Vector2 _networkedMovement = Vector2.zero;
 
-    [Networked] private Color PlayerColor { get; set; }
+    [Networked, OnChangedRender( nameof( OnColorChanged ) )] private Color PlayerColor { get; set; }
 
     public override void Spawned()
     {
@@ -46,7 +47,7 @@ public class Player : NetworkBehaviour
             movement.y = -1f;
         }
 
-        if( Input.GetKeyDown( KeyCode.Space ) )
+        if( Input.GetKey( KeyCode.Space ) )
         {
             request_color = true;
         }
@@ -67,7 +68,7 @@ public class Player : NetworkBehaviour
             return;
         }
 
-        PlayerInputs? inputs = GetInput<PlayerInputs>() ;
+        PlayerInputs? inputs = GetInput<PlayerInputs>();
 
         if( !inputs.HasValue )
         {
@@ -80,11 +81,36 @@ public class Player : NetworkBehaviour
 
         if( value.RequestColorChange )
         {
+            Debug.Log( "Request color change" );
             PlayerColor = Random.ColorHSV();
         }
     }
 
     public override void Render() // Apply data here
+    {
+        UpdateTransform();
+        CheckSelfDestruct();
+    }
+
+    private void CheckSelfDestruct()
+    {
+        if( !HasInputAuthority )
+        {
+            return;
+        }
+
+        if( Input.GetKeyDown( KeyCode.Backspace ) )
+        {
+            RPC_SelfDestruct();
+        }
+
+        if( Input.GetKeyDown( KeyCode.R ) )
+        {
+            RPC_SayHello();
+        }
+    }
+
+    private void UpdateTransform()
     {
         if( !HasStateAuthority )
         {
@@ -92,6 +118,23 @@ public class Player : NetworkBehaviour
         }
 
         transform.position += new Vector3( _networkedMovement.x, 0.0f, _networkedMovement.y ) * _speed * Time.deltaTime;
+    }
+
+    private void OnColorChanged()
+    {
+        _meshRenderer.material.color = PlayerColor;
+    }
+
+    [Rpc( RpcSources.InputAuthority, RpcTargets.StateAuthority )]
+    private void RPC_SelfDestruct()
+    {
+        Runner.Despawn( Object );
+    }
+
+    [Rpc( RpcSources.All, RpcTargets.All )]
+    private void RPC_SayHello()
+    {
+        Debug.Log( "HELLO" );
     }
 
     public struct PlayerInputs : INetworkInput

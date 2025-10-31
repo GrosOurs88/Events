@@ -266,6 +266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 5
+  _meshRenderer: {fileID: 483897007687456589}
 --- !u!114 &8462107696422240244
 MonoBehaviour:
   m_ObjectHideFlags: 0
