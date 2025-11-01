@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Map
+  - Chest
+  - Decor
+  - Floor
+  - SpikesStopZone
+  - Lava
+  - Cross
   layers:
   - Default
   - TransparentFX
@@ -13,15 +20,15 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Cross
+  - Floor
+  - Map
+  - Structure
+  - Chest
+  - Lava
+  - PostProcessing
+  - Player
+  - CrossSpecial
   - 
   - 
   - 
